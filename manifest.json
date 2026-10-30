@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "x-nomoretracking",
+  "version": "1.0.0",
+  "description": "X の「リンクをコピー」で付く s・t などの追跡パラメータをコピー時に取り除きます。",
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*", "https://mobile.twitter.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ]
+}
