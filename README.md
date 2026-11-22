@@ -1,41 +1,69 @@
-# x-nomoretracking
+<div align="center">
 
-X(旧Twitter)の共有メニューで「リンクをコピー」を押したときに、URL へ付く追跡パラメータ(`?s=20` や `&a=...` など)を取り除く Chrome / Edge 拡張機能。
+<p align="center">
+  <img src="docs/images/banner.png" alt="X No More Tracking" width="100%">
+</p>
+
+<p align="center"><b>English</b> | <a href="README.ja.md">日本語</a></p>
+
+<h1 align="center">X No More Tracking</h1>
+
+<h3 align="center">Copy X links without the tracking parameters.</h3>
+
+<p align="center">A Chrome / Edge extension that removes tracking parameters such as <code>?s=20</code> and <code>&amp;a=...</code> from the URL when you press "Copy link" in the X (formerly Twitter) share menu.</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/Lapius7/x-nomoretracking?style=flat-square&color=97ca00"></a>
+  <a href="https://github.com/Lapius7/x-nomoretracking/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Lapius7/x-nomoretracking?style=flat-square&color=e3b341&logo=github"></a>
+  <a href="https://github.com/Lapius7/x-nomoretracking/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/Lapius7/x-nomoretracking?style=flat-square&color=3b82f6"></a>
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#removed-parameters">Removed parameters</a> ·
+  <a href="#how-it-works">How it works</a>
+</p>
+
+</div>
+
+## Overview
 
 ```
-変更前  https://x.com/user/status/123?a=dfq3ZiVQ-HNKd1E1CME&s=20
-変更後  https://x.com/user/status/123
+Before  https://x.com/user/status/123?a=dfq3ZiVQ-HNKd1E1CME&s=20
+After   https://x.com/user/status/123
 ```
 
-権限の要求も外部への通信もありません。動くのは x.com / twitter.com のページ内だけで、アドレスバーの URL やページ遷移には触れません。
+- Requests no permissions and makes no network requests.
+- Runs only on x.com and twitter.com pages. It does not touch the URL in the address bar or page navigation.
 
-## インストール
+## Quick start
 
-Chrome Web Store には公開していないので、ソースから読み込みます。
+The extension is not published on the Chrome Web Store, so load it from source.
 
-1. このリポジトリをダウンロードします(`git clone https://github.com/Lapius7/x-nomoretracking.git` か、ZIP を展開)。
-2. `chrome://extensions`(Edge は `edge://extensions`)を開き、右上の「デベロッパー モード」をオンにします。
-3. 「パッケージ化されていない拡張機能を読み込む」を押し、ダウンロードしたフォルダを選びます。
-4. 開いている x.com のタブを再読み込みします。
+1. Download this repository (`git clone https://github.com/Lapius7/x-nomoretracking.git`, or extract the ZIP).
+2. Open `chrome://extensions` (`edge://extensions` in Edge) and turn on "Developer mode" in the top right.
+3. Click "Load unpacked" and select the downloaded folder.
+4. Reload any open x.com tabs.
 
-更新するときは、リポジトリを取得し直し、拡張機能のページで更新ボタンを押してタブを再読み込みします。
+To update, fetch the repository again, press the refresh button on the extensions page, and reload the tabs.
 
-## 取り除くパラメータ
+## Removed parameters
 
 `s` `t` `a` `ref_src` `ref_url` `ref` `src`
 
-x.com / twitter.com / mobile.twitter.com の URL についているものだけが対象です。`?q=...` のような検索条件など、上の一覧にないパラメータは残ります。対象は `content.js` の `TRACKING` で変えられます。
+Only these parameters on x.com, twitter.com and mobile.twitter.com URLs are removed. Parameters not in this list, such as the search query in `?q=...`, are kept. You can change the list in `TRACKING` in `content.js`.
 
-## 仕組み
+## How it works
 
-`content.js` を x.com のページ本体の JavaScript 環境(`world: "MAIN"`)で、ページの読み込み前に実行します。X の共有メニューがクリップボードへ書き込む経路をすべてフックし、書き込む直前に URL から上のパラメータを消します。
+`content.js` runs in the page's own JavaScript environment (`world: "MAIN"`) before the page loads. It hooks every route through which X's share menu writes to the clipboard and strips the parameters above from the URL just before it is written.
 
 - `navigator.clipboard.writeText` / `navigator.clipboard.write`
-- `document.execCommand('copy')`(隠し入力欄を選択してコピーする方式。`copy` イベントで中身を差し替える)
+- `document.execCommand('copy')` (the method that selects a hidden input and copies it; the `copy` event swaps the content)
 - `navigator.share`
 
-X のコピーの方式が変わって効かなくなったときは、`content.js` に経路を足します。
+> [!NOTE]
+> If X changes how it copies and the extension stops working, add the new route to `content.js`. This README does not claim the extension works with the current X web app; the author has not re-tested it for this rewrite.
 
-## ライセンス
+## License
 
 [MIT](LICENSE)
