@@ -1,9 +1,5 @@
 <div align="center">
 
-<p align="center">
-  <img src="docs/images/banner.png" alt="X No More Tracking" width="100%">
-</p>
-
 <p align="center"><a href="README.md">English</a> | <b>日本語</b></p>
 
 <h1 align="center">X No More Tracking</h1>
